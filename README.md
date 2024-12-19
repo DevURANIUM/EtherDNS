@@ -132,17 +132,19 @@ After installing **.NET 9.0**, you can compile and run the project.
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details. The **MIT License** allows you to freely use, modify, and distribute the project, as long as the copyright notice and license text are included with any copies or substantial portions of the software.
 
+### Releases
+
+To download the latest stable release of **EtherDNS**, visit the official [Releases page](https://github.com/DevURANIUM/EtherDNS/releases).
+
+- Check for the latest executable and updates.
+- Download the .zip or .exe file for Windows 64-bit and follow the installation instructions.
+
 ## Support & Contributions
 
 If you encounter any issues or have suggestions for improvement, please reach out via:
 
 - [Telegram](https://t.me/DevUranium)
 - [GitHub Issues](https://github.com/DevURANIUM/EtherDNS/issues)
-
-### Contribution Guidelines
-
-- Fork the repository and create a new branch.
-- Submit a pull request with a detailed description of the changes.
 
 ## Donation Links
 
