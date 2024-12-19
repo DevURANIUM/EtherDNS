@@ -138,8 +138,7 @@ To download the latest stable release of **EtherDNS**, visit the official [Relea
 
 - Check for the latest executable and updates.
 - Download the .exe file for Windows 64-bit and follow the installation instructions.
-**Version 1.0.0.0** - Released
-- [EtherDNS.exe (12.8 MB)](https://github.com/DevURANIUM/EtherDNS/releases/download/1.0.0.0/EtherDNS.exe)  
+- **Version 1.0.0.0** - Released. [EtherDNS.exe (12.8 MB)](https://github.com/DevURANIUM/EtherDNS/releases/download/1.0.0.0/EtherDNS.exe)  
 
 ## Support & Contributions
 
