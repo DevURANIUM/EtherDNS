@@ -19,7 +19,7 @@
 
 To install .NET 9.0, you can download it from the official site:
 
-[Download .NET 9.0](https://dotnet.microsoft.com/download/dotnet)
+[Download .NET 9.0](https://dotnet.microsoft.com/download/dotnet](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-9.0.101-windows-x64-installer)
 
 After installing **.NET 9.0**, you can compile and run the project.
 
