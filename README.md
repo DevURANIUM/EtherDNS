@@ -99,7 +99,7 @@ After installing **.NET 9.0**, you can compile and run the project.
    ======================================
    Select a DNS Service to Set:
    --------------------------------------
-    + Active DNS: Cloudflare
+    + Active DNS: N/A
    --------------------------------------
     ┌ 1. Google (Web)           : [8.8.8.8, 8.8.4.4]
     ├ 2. Cloudflare (Web)       : [1.1.1.1, 1.0.0.1]
