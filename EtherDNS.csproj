@@ -11,7 +11,7 @@
     <PublishTrimmed>true</PublishTrimmed>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <SelfContained>true</SelfContained>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <AssemblyVersion>1.1</AssemblyVersion>
     <AssemblyCopyright>Copyright © DevUranium. All rights reserved.</AssemblyCopyright>
   </PropertyGroup>
 

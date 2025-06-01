@@ -93,14 +93,20 @@ class Program
         Console.WriteLine(" ├ 2. Cloudflare (Web)       : [1.1.1.1, 1.0.0.1]");
         Console.WriteLine(" ├ 3. Shecan (Web-Game)      : [178.22.122.100, 185.51.200.2]");
         Console.WriteLine(" ├ 4. Begzar (Web)           : [185.55.226.26, 185.55.225.25]");
-        Console.WriteLine(" ├ 5. Electro (Game)         : [78.157.42.100, 78.157.42.101]");
-        Console.WriteLine(" ├ 6. Radar Game (Game)      : [10.202.10.10, 10.202.10.11]");
-        Console.WriteLine(" ├ 7. 403.online (Game)      : [10.202.10.202, 10.202.10.102]");
-        Console.WriteLine(" ├ 8. Tci (Web-Game)         : [217.218.127.127, 217.218.155.155]");
-        Console.WriteLine(" ├ 9. AsiaTech (Web-Game)    : [185.98.113.113, 185.98.114.114]");
-        Console.WriteLine(" ├ 10. Shatel (Web-Game)     : [85.15.1.14, 85.15.1.15]");
-        Console.WriteLine(" ├ 11. Pishgaman (Web-Game)  : [5.202.100.100, 5.202.100.101]");
-        Console.WriteLine(" └ 12. Manually Set DNS      : [Enter custom DNS addresses]");
+        Console.WriteLine(" ├ 5. Hostiran (Web)         : [172.29.0.100, 172.29.2.100]");        
+        Console.WriteLine(" ├ 6. Electro (Game)         : [78.157.42.100, 78.157.42.101]");
+        Console.WriteLine(" ├ 7. Radar Game (Game)      : [10.202.10.10, 10.202.10.11]");
+        Console.WriteLine(" ├ 8. 403.online (Web-Game)  : [10.202.10.202, 10.202.10.102]");
+        Console.WriteLine(" ├ 9. Tci (Web-Game)         : [5.200.200.200, 217.218.127.127]");
+        Console.WriteLine(" ├ 10. AsiaTech (Web-Game)   : [185.98.113.113, 185.98.114.114]");
+        Console.WriteLine(" ├ 11. Shatel (Web-Game)     : [85.15.1.14, 85.15.1.15]");
+        Console.WriteLine(" ├ 12. Pishgaman (Web-Game)  : [5.202.100.100, 5.202.100.101]");
+        Console.WriteLine(" ├ 13. Mobinnet (Web-Game)   : [10.104.88.8, 8.8.8.8]");
+        Console.WriteLine(" ├ 14. ParsOnline (Web-Game) : [37.10.64.1, 37.10.65.1]");
+        Console.WriteLine(" ├ 15. Sabanet (Web-Game)    : [89.40.90.100, 188.158.158.158]");
+        Console.WriteLine(" ├ 16. Taknet (Web-Game)     : [185.47.48.122, 185.142.95.10]");
+        Console.WriteLine(" ├ 17. Zi-Tel (Web-Game)     : [172.20.11.11, 172.20.11.12]");
+        Console.WriteLine(" └ 18. Manually Set DNS      : [Enter custom DNS addresses]");
         Console.WriteLine("0. Back to Main Menu");
         Console.WriteLine("======================================");
         Console.Write("Choose a DNS service or option: ");
@@ -112,14 +118,20 @@ class Program
             case "2": SetCloudflareDNS(); break;
             case "3": SetShecanDNS(); break;
             case "4": SetBegzarDNS(); break;
-            case "5": SetElectroDNS(); break;
-            case "6": SetRadarGameDNS(); break;
-            case "7": SetDNS403(); break;
-            case "8": SetTciDNS(); break;
-            case "9": SetAsiaTechDNS(); break;
-            case "10": SetShatelDNS(); break;
-            case "11": SetPishgamanDNS(); break;
-            case "12": ManuallySetDNS(); break;
+            case "5": SetHostIranDNS(); break;
+            case "6": SetElectroDNS(); break;
+            case "7": SetRadarGameDNS(); break;
+            case "8": SetDNS403(); break;
+            case "9": SetTciDNS(); break;
+            case "10": SetAsiaTechDNS(); break;
+            case "11": SetShatelDNS(); break;
+            case "12": SetPishgamanDNS(); break;
+            case "13": SetMobinnetDNS(); break;
+            case "14": SetParsOnlineDNS(); break;
+            case "15": SetSabanetDNS(); break;
+            case "16": SetTaknetDNS(); break;
+            case "17": SetZiTelDNS(); break;
+            case "18": ManuallySetDNS(); break;
             case "0": return;
             default:
                 Console.WriteLine("Invalid choice! Please choose a number between 0 and 12.");
@@ -129,7 +141,7 @@ class Program
 
     static string GetActiveDNS()
     {
-        string command = "Get-DnsClientServerAddress | Where-Object { $_.InterfaceAlias -match 'Wi-Fi|Ethernet' } | Select-Object -ExpandProperty ServerAddresses";
+        string command = @"Get-DnsClientServerAddress | Where-Object { $_.InterfaceAlias -match 'Wi-Fi|Ethernet' } | Select-Object -ExpandProperty ServerAddresses | Where-Object { $_ -ne '192.168.1.1' } | Where-Object { $_ -match '^\d{1,3}(\.\d{1,3}){3}$' } ";
         string output = ExecutePowerShellCommand(command);
 
         if (string.IsNullOrEmpty(output))
@@ -167,13 +179,19 @@ class Program
             { "Cloudflare", new[] { "1.1.1.1", "1.0.0.1" } },
             { "Shecan", new[] { "178.22.122.100", "185.51.200.2" } },
             { "Begzar", new[] { "185.55.226.26", "185.55.225.25" } },
+            { "HostIran", new[] { "172.29.0.100", "172.29.2.100" } },
             { "Electro", new[] { "78.157.42.100", "78.157.42.101" } },
             { "Radar Game", new[] { "10.202.10.10", "10.202.10.11" } },
             { "403.online", new[] { "10.202.10.202", "10.202.10.102" } },
-            { "Tci", new[] { "217.218.127.127", "217.218.155.155" } },
+            { "Tci", new[] { "5.200.200.200", "217.218.127.127" } },
             { "AsiaTech", new[] { "185.98.113.113", "185.98.114.114" } },
             { "Shatel", new[] { "85.15.1.14", "85.15.1.15" } },
-            { "Pishgaman", new[] { "5.202.100.100", "5.202.100.101" } }
+            { "Pishgaman", new[] { "5.202.100.100", "5.202.100.101" } },
+            { "MobinNet", new[] { "10.104.88.8", "8.8.8.8" } },
+            { "ParsOnline", new[] { "37.10.64.1", "37.10.65.1" } },
+            { "SabaNet", new[] { "89.40.90.100", "188.158.158.158" } },
+            { "TakNet", new[] { "185.47.48.122", "185.142.95.10" } },
+            { "Zi-Tel", new[] { "172.20.11.11", "172.20.11.12" } }
         };
 
         if (activeDNS == "N/A")
@@ -232,19 +250,19 @@ class Program
         SetDNS("178.22.122.100", "185.51.200.2");
     }
 
+    static void SetBegzarDNS()
+    {
+        SetDNS("185.55.226.26", "185.55.225.25");
+    }
+
+    static void SetHostIranDNS()
+    {
+        SetDNS("172.29.0.100", "172.29.2.100");
+    }
+
     static void SetElectroDNS()
     {
         SetDNS("78.157.42.100", "78.157.42.101");
-    }
-
-    static void SetAsiaTechDNS()
-    {
-        SetDNS("185.98.113.113", "185.98.114.114");
-    }
-
-    static void SetDNS403()
-    {
-        SetDNS("10.202.10.202", "10.202.10.102");
     }
 
     static void SetRadarGameDNS()
@@ -252,14 +270,24 @@ class Program
         SetDNS("10.202.10.10", "10.202.10.11");
     }
 
-    static void SetBegzarDNS()
+    static void SetDNS403()
     {
-        SetDNS("185.55.226.26", "185.55.225.25");
+        SetDNS("10.202.10.202", "10.202.10.102");
     }
 
     static void SetTciDNS()
     {
-        SetDNS("217.218.127.127", "217.218.155.155");
+        SetDNS("5.200.200.200", "217.218.127.127");
+    }
+
+    static void SetAsiaTechDNS()
+    {
+        SetDNS("185.98.113.113", "185.98.114.114");
+    }
+
+    static void SetShatelDNS()
+    {
+        SetDNS("85.15.1.14", "85.15.1.15");
     }
 
     static void SetPishgamanDNS()
@@ -267,9 +295,29 @@ class Program
         SetDNS("5.202.100.100", "5.202.100.101");
     }
 
-    static void SetShatelDNS()
+    static void SetMobinnetDNS()
     {
-        SetDNS("85.15.1.14", "85.15.1.15");
+        SetDNS("10.104.88.8", "8.8.8.8");
+    }
+
+    static void SetParsOnlineDNS()
+    {
+        SetDNS("37.10.64.1", "37.10.65.1");
+    }
+
+    static void SetSabanetDNS()
+    {
+        SetDNS("89.40.90.100", "188.158.158.158");
+    }
+
+    static void SetTaknetDNS()
+    {
+        SetDNS("185.47.48.122", "185.142.95.10");
+    }
+
+    static void SetZiTelDNS()
+    {
+        SetDNS("172.20.11.11", "172.20.11.12");
     }
 
     static void SetDNS(string primary, string secondary)
@@ -416,8 +464,9 @@ class Program
         Console.WriteLine("Developer Information:");
         Console.WriteLine("======================================");
         Console.WriteLine("TELEGRAM: t.me/DevUranium");
-        Console.WriteLine("GitHub: github.com/DevURANIUM");
+        Console.WriteLine("GitHub: Github.com/DevURANIUM");
         Console.WriteLine("Email: info@heydari.org");
+        Console.WriteLine("Version: 1.1");
         Console.WriteLine();
         Console.WriteLine("If you liked this project, feel free to donate!");
         Console.WriteLine("======================================");
