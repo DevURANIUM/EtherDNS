@@ -2,6 +2,8 @@ using System;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
 using System.Threading;
+using System.Net.NetworkInformation;
+using System.Collections.Generic;
 
 class Program
 {
