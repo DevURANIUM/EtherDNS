@@ -334,6 +334,42 @@ class Program
         Thread.Sleep(3000);
         GoBackToDNSMenu(); // Return to DNS setup menu
     }
+    
+    static string GetActiveNetworkInterface()
+    {
+        try
+        {
+            NetworkInterface[] interfaces = NetworkInterface.GetAllNetworkInterfaces();  
+            foreach (NetworkInterface ni in interfaces)
+            {
+                if (ni.OperationalStatus == OperationalStatus.Up && 
+                    ni.NetworkInterfaceType != NetworkInterfaceType.Loopback &&
+                    ni.NetworkInterfaceType != NetworkInterfaceType.Tunnel)
+                {
+                    IPInterfaceProperties ipProps = ni.GetIPProperties();
+                    foreach (UnicastIPAddressInformation ip in ipProps.UnicastAddresses)
+                    {
+                        if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork &&
+                            !ip.Address.ToString().StartsWith("169.254"))
+                        {
+                            string interfaceName = ni.Name;
+                            if (interfaceName.ToLower().Contains("wi-fi") || interfaceName.ToLower().Contains("wireless"))
+                                return "Wi-Fi";
+                            else if (interfaceName.ToLower().Contains("ethernet") || interfaceName.ToLower().Contains("local"))
+                                return "Ethernet";
+                            else
+                                return interfaceName;
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception)
+        {
+            return "Wi-Fi";
+        }
+        return "Wi-Fi";
+    }
 
     static void ManuallySetDNS()
     {
@@ -354,7 +390,7 @@ class Program
                 Console.WriteLine("Error: DNS Primary and DNS Secondary cannot be the same. Please enter different DNS.");
             }
 
-        } while (dns1 == dns2); 
+        } while (dns1 == dns2);
 
         SetDNS(dns1, dns2);
     }
