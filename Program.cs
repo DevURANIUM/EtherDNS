@@ -325,12 +325,14 @@ class Program
     static void SetDNS(string primary, string secondary)
     {
         Console.Clear();
-        Console.WriteLine($"Setting DNS to {primary} and {secondary}...");
+        string activeInterface = GetActiveNetworkInterface();
+        Console.WriteLine($"Detected active network interface: {activeInterface}");
+        Console.WriteLine($"Setting DNS to {primary} and {secondary} on {activeInterface}");
         
-        ExecuteCommand($"netsh interface ip set dns name=\"Wi-Fi\" source=static addr={primary}");
-        ExecuteCommand($"netsh interface ip add dns name=\"Wi-Fi\" addr={secondary} index=2");
+        ExecuteCommand($"netsh interface ip set dns name=\"{activeInterface}\" source=static addr={primary}");
+        ExecuteCommand($"netsh interface ip add dns name=\"{activeInterface}\" addr={secondary} index=2");
         
-        Console.WriteLine($"DNS Set to {primary} and {secondary} Successfully!");
+        Console.WriteLine($"DNS Set to {primary} and {secondary} Successfully on {activeInterface}");
         Thread.Sleep(3000);
         GoBackToDNSMenu(); // Return to DNS setup menu
     }
@@ -398,9 +400,12 @@ class Program
     static void RemoveDNS()
     {
         Console.Clear();
+        string activeInterface = GetActiveNetworkInterface();
+        Console.WriteLine($"Detected active network interface: {activeInterface}");
         Console.WriteLine("Removing DNS Configuration...");
-        ExecuteCommand("netsh interface ip set dns name=\"Wi-Fi\" source=dhcp");
-        Console.WriteLine("DNS Configuration Removed Successfully!");
+
+        ExecuteCommand($"netsh interface ip set dns name=\"{activeInterface}\" source=dhcp");
+        Console.WriteLine($"DNS Configuration Removed Successfully from {activeInterface}");
         Thread.Sleep(3000);
         GoBackToMainMenu();  // Return to DNS setup menu
     }
