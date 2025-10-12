@@ -150,7 +150,6 @@ To download the latest stable release of **EtherDNS**, visit the official [Relea
 
 If you encounter any issues or have suggestions for improvement, please reach out via:
 
-- [Telegram](https://t.me/DevUranium)
 - [GitHub Issues](https://github.com/DevURANIUM/EtherDNS/issues)
 
 ## Donation Links
