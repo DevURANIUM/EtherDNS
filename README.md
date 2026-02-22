@@ -99,7 +99,8 @@ After installing **.NET 9.0**, you can compile and run the project.
    ======================================
    Select a DNS Service to Set:
    --------------------------------------
-    + Active DNS: Radar Game
+    + Active Interface: Wi-Fi
+    + Active DNS: Cloudflare
    --------------------------------------
     ┌ 1. Google (Web)           : [8.8.8.8, 8.8.4.4]
     ├ 2. Cloudflare (Web)       : [1.1.1.1, 1.0.0.1]
@@ -108,17 +109,19 @@ After installing **.NET 9.0**, you can compile and run the project.
     ├ 5. Hostiran (Web)         : [172.29.0.100, 172.29.2.100]
     ├ 6. Electro (Game)         : [78.157.42.100, 78.157.42.101]
     ├ 7. Radar Game (Game)      : [10.202.10.10, 10.202.10.11]
-    ├ 8. 403.online (Web-Game)  : [10.202.10.202, 10.202.10.102]
-    ├ 9. Tci (Web-Game)         : [5.200.200.200, 217.218.127.127]
-    ├ 10. AsiaTech (Web-Game)   : [185.98.113.113, 185.98.114.114]
-    ├ 11. Shatel (Web-Game)     : [85.15.1.14, 85.15.1.15]
-    ├ 12. Pishgaman (Web-Game)  : [5.202.100.100, 5.202.100.101]
-    ├ 13. Mobinnet (Web-Game)   : [10.104.88.8, 8.8.8.8]
-    ├ 14. ParsOnline (Web-Game) : [37.10.64.1, 37.10.65.1]
-    ├ 15. Sabanet (Web-Game)    : [89.40.90.100, 188.158.158.158]
-    ├ 16. Taknet (Web-Game)     : [185.47.48.122, 185.142.95.10]
-    ├ 17. Zi-Tel (Web-Game)     : [172.20.11.11, 172.20.11.12]
-    └ 18. Manually Set DNS      : [Enter custom DNS addresses]
+    ├ 8. Dynx.pro (Web-Game)    : [193.24.103.1, 193.24.103.2]
+    ├ 9. Private IP (Web-Game)  : [10.30.72.17, 10.30.72.18]
+    ├ 10. 403.online (Web-Game) : [10.202.10.202, 10.202.10.102]
+    ├ 11. Tci (Web-Game)        : [5.200.200.200, 217.218.127.127]
+    ├ 12. AsiaTech (Web-Game)   : [185.98.113.113, 185.98.114.114]
+    ├ 13. Shatel (Web-Game)     : [85.15.1.14, 85.15.1.15]
+    ├ 14. Pishgaman (Web-Game)  : [5.202.100.100, 5.202.100.101]
+    ├ 15. Mobinnet (Web-Game)   : [10.104.88.8, 8.8.8.8]
+    ├ 16. ParsOnline (Web-Game) : [37.10.64.1, 37.10.65.1]
+    ├ 17. Sabanet (Web-Game)    : [89.40.90.100, 188.158.158.158]
+    ├ 18. Taknet (Web-Game)     : [185.47.48.122, 185.142.95.10]
+    ├ 19. Zi-Tel (Web-Game)     : [172.20.11.11, 172.20.11.12]
+    └ 20. Manually Set DNS      : [Enter custom DNS addresses]
    0. Back to Main Menu
    ======================================
    Choose a DNS service or option:
@@ -144,7 +147,7 @@ To download the latest stable release of **EtherDNS**, visit the official [Relea
 
 - Check for the latest executable and updates.
 - Download the .exe file for Windows 64-bit and follow the installation instructions.
-- **Version 1.1** - Released. [EtherDNS.exe (12.8 MB)](https://github.com/DevURANIUM/EtherDNS/releases/download/1.1/EtherDNS.exe)  
+- **Version 1.2** - Released. [EtherDNS.exe (12.8 MB)](https://github.com/DevURANIUM/EtherDNS/releases/download/1.2/EtherDNS.exe)  
 
 ## Support & Contributions
 
