@@ -1,18 +1,30 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>EtherDNS</RootNamespace>
+    <AssemblyName>EtherDNS</AssemblyName>
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
-    <ApplicationManifest>app.manifest</ApplicationManifest> 
-    <PublishSingleFile>true</PublishSingleFile>
-    <PublishTrimmed>true</PublishTrimmed>
+    <!-- Build with -p:NoAdmin=true to run without the UAC prompt (UI preview / debugging) -->
+    <ApplicationManifest Condition="'$(NoAdmin)' != 'true'">app.manifest</ApplicationManifest>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <SelfContained>true</SelfContained>
-    <AssemblyVersion>1.2</AssemblyVersion>
-    <AssemblyCopyright>Copyright © DevUranium. All rights reserved.</AssemblyCopyright>
+    <Version>2.0.0</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    <Product>EtherDNS</Product>
+    <Company>DevUranium</Company>
+    <Description>EtherDNS - DNS changer and network toolkit</Description>
+    <Copyright>Copyright © DevUranium. All rights reserved.</Copyright>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="legacy\**;publish\**;dist\**;installer\**" />
+    <None Remove="legacy\**;publish\**;dist\**;installer\**" />
+    <Resource Include="Resources\icon.ico" />
+  </ItemGroup>
 
 </Project>

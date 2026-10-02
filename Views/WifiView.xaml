@@ -1,0 +1,128 @@
+<UserControl x:Class="EtherDNS.Views.WifiView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:core="clr-namespace:EtherDNS.Core">
+    <UserControl.Resources>
+        <DataTemplate x:Key="WifiCard" DataType="{x:Type core:WifiProfile}">
+            <Border x:Name="Card" Width="276" Margin="0,0,16,16" CornerRadius="12" Padding="18"
+                    Background="{StaticResource CardSolidBrush}" BorderBrush="{StaticResource CardStroke}" BorderThickness="1">
+
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <core:IconBadge Glyph="&#xE701;" Tint="brand" Size="38"/>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Name}" FontSize="15.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                                <TextBlock Text="&#xE72E;" Style="{StaticResource Icon}" FontSize="10.5" Foreground="{StaticResource MutedBrush}" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding Authentication}" FontSize="12" Foreground="{StaticResource SubTextBrush}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                    <Border Margin="0,16,0,0" CornerRadius="12" Background="#0AFFFFFF" Padding="14,8,8,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding DisplayPassword}" Style="{StaticResource Mono}" FontSize="13.5"
+                                       VerticalAlignment="Center" TextTrimming="CharacterEllipsis" x:Name="Pwd"/>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" x:Name="PwdActions">
+                                <Button Click="Reveal_Click" x:Name="RevealBtn" ToolTip="Show / hide">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource MiniIconButton}">
+                                            <Setter Property="Content" Value="&#xE890;"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsRevealed}" Value="True">
+                                                    <Setter Property="Content" Value="&#xED1A;"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                                <Button Style="{StaticResource MiniIconButton}" Content="&#xE8C8;" Margin="6,0,0,0" ToolTip="Copy password" Click="Copy_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding HasPassword}" Value="False">
+                    <Setter TargetName="PwdActions" Property="Visibility" Value="Collapsed"/>
+                    <Setter TargetName="Pwd" Property="Foreground" Value="{StaticResource MutedBrush}"/>
+                    <Setter TargetName="Pwd" Property="FontFamily" Value="{StaticResource UiFont}"/>
+                    <Setter TargetName="Pwd" Property="Margin" Value="0,7"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsRevealed}" Value="True">
+                    <Setter TargetName="Pwd" Property="Foreground" Value="{StaticResource Accent1Brush}"/>
+                </DataTrigger>
+                <Trigger SourceName="Card" Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Card" Property="BorderBrush" Value="#555B8CFF"/>
+                </Trigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Margin="0,0,0,22">
+            <StackPanel>
+                <TextBlock Text="Wi-Fi" Style="{StaticResource PageTitle}"/>
+                <TextBlock Text="Every Wi-Fi network this PC remembers, with its saved password." Style="{StaticResource PageSubtitle}"/>
+            </StackPanel>
+            <Button Style="{StaticResource PrimaryButton}" HorizontalAlignment="Right" VerticalAlignment="Center" Click="Refresh_Click">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xE72C;" Style="{StaticResource Icon}" FontSize="13" Margin="0,0,9,0"/>
+                    <TextBlock Text="Rescan"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,0,16,18">
+            <Border HorizontalAlignment="Left" CornerRadius="10" Padding="12,7" Background="#0DFFFFFF" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xE701;" Style="{StaticResource Icon}" FontSize="13" Foreground="{StaticResource Accent1Brush}" Margin="0,0,8,0"/>
+                    <TextBlock Text="{Binding WifiCountText}" FontSize="12.5" FontWeight="SemiBold" Foreground="{StaticResource SubTextBrush}"/>
+                </StackPanel>
+            </Border>
+            <TextBox Style="{StaticResource SearchInput}" Tag="Search networks…" Width="270" HorizontalAlignment="Right"
+                     Text="{Binding WifiSearch, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+
+        <ScrollViewer Grid.Row="2" Style="{StaticResource FadeScroller}">
+            <ItemsControl ItemsSource="{Binding WifiView}" ItemTemplate="{StaticResource WifiCard}" Margin="0,10,0,30" core:Reveal.Stagger="True">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Loading -->
+        <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Visibility="{Binding IsLoadingWifi, Converter={StaticResource BoolToVis}}">
+            <Control Template="{StaticResource SpinnerTemplate}" Width="44" Height="44"/>
+            <TextBlock Text="Reading saved networks…" Foreground="{StaticResource SubTextBrush}" Margin="0,14,0,0"/>
+        </StackPanel>
+
+        <!-- Empty -->
+        <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Visibility="{Binding WifiEmpty, Converter={StaticResource BoolToVis}}">
+            <Border Width="72" Height="72" CornerRadius="22" Background="#12BF5AF2" HorizontalAlignment="Center">
+                <TextBlock Text="&#xEB5E;" Style="{StaticResource Icon}" FontSize="30" Foreground="#FFBF5AF2" HorizontalAlignment="Center"/>
+            </Border>
+            <TextBlock Text="No saved Wi-Fi networks" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,16,0,0"/>
+            <TextBlock Text="This PC has no Wi-Fi profiles, or the WLAN service is off." Foreground="{StaticResource SubTextBrush}"
+                       HorizontalAlignment="Center" Margin="0,4,0,0"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

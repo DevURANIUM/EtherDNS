@@ -1,171 +1,239 @@
+<div align="center">
+
 # EtherDNS
 
-**EtherDNS** is a network management tool designed for **Windows 64-bit** systems using **.NET 9.0**. The application allows users to reset network configurations, set or remove DNS settings, and view Wi-Fi connection history. The tool provides a simple command-line interface for quickly managing DNS servers, optimizing web browsing and gaming performance, and troubleshooting network issues.
+**A modern DNS changer and network toolkit for Windows.**
+
+Switch between 48 verified DNS servers in one click, benchmark them from your own connection,
+see your public IP, reset your network and recover saved Wi-Fi passwords, all in one app.
+
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0078D6?logo=windows&logoColor=white)](#requirements)
+[![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
+[![UI](https://img.shields.io/badge/UI-WPF-5B8CFF)](#tech-stack)
+[![License](https://img.shields.io/badge/license-MIT-34D399)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/DevURANIUM/EtherDNS?color=6366F1)](https://github.com/DevURANIUM/EtherDNS/releases/latest)
+
+[**Download**](https://github.com/DevURANIUM/EtherDNS/releases/latest) ·
+[Features](#features) ·
+[DNS list](#dns-servers) ·
+[Build from source](#build-from-source) ·
+[Support](#support--donations)
+
+<br/>
+
+<img src="docs/screenshots/overview.png" alt="EtherDNS overview" width="860"/>
+
+</div>
+
+---
 
 ## Features
 
-- **Reset Network**: Renew IP and flush DNS cache to resolve network problems.
-- **Set DNS**: Choose and apply DNS servers for optimal performance.
-- **Remove DNS Configuration**: Remove any manually configured DNS settings.
-- **Wi-Fi History**: View recently connected Wi-Fi networks.
-- **Developer Info**: Contact details and credits for the developer.
+### Network Overview
+- Live status of the active adapter: **DNS provider, local IP, gateway, link speed, DNS mode** (static or DHCP)
+- Pick which adapter to manage (Wi-Fi, Ethernet, …)
+- **Live DNS monitor**: response time of your current DNS, measured every few seconds and drawn as a chart
+- Quick actions: **Flush DNS**, **Renew IP**, **Network Reset**, **Remove DNS**, **Speed Test**
+
+### DNS Servers
+- **48 verified DNS servers** organized into groups: Iranian, Global, Privacy, Ad Block, Security, Family
+- **Gaming** filter, search by name or IP, and grouped or speed-ranked views
+- **Speed test** for every server: sends real DNS queries over UDP (more accurate than ping, which many resolvers block)
+- One-click **Apply**, plus **Custom DNS** for any primary/secondary pair you want
+- **Remove DNS**: clear manual DNS (IPv4 + IPv6) from the selected adapter, or from **all adapters** at once
+- The DNS you're currently using is highlighted; the fastest one is marked after a test
+
+### IP Info
+- Your **public IP** with country, region, city, ISP, organization, ASN, timezone and coordinates
+- Show it on a map, or copy the IP / all details with one click
+- Refreshes automatically when your connection changes (e.g. a VPN connects)
+- Local network details: adapter, local IP, gateway, MAC address, DNS servers
+
+### Wi-Fi
+- Every Wi-Fi network this PC has saved, with its security type
+- Show, hide or copy a saved password
+
+### Design
+- Dark **glass** interface using the native Windows 11 acrylic effect
+- Rounded window with the system shadow, smooth animations and toast notifications
+
+<div align="center">
+<img src="docs/screenshots/dns-servers.png" alt="DNS servers" width="860"/>
+</div>
+
+---
+
+## DNS servers
+
+Every server below was checked to answer DNS queries before being added.
+
+| Group | Servers |
+|---|---|
+| **Iranian** | Shecan, Begzar, Electro, Radar Game, 403.online, Dynx.pro, Private IP, Vanilla, TCI, AsiaTech, Shatel, Pishgaman, Mobinnet, ParsOnline, Sabanet, Taknet, Zi-Tel |
+| **Global** | Google, Cloudflare, OpenDNS, Level3, Level3 Alt, Quad9 ECS, UltraDNS, Gcore, Yandex |
+| **Privacy** | Quad9, Quad9 Unfiltered, DNS.SB, NextDNS, Control D, AdGuard Unfiltered |
+| **Ad Block** | AdGuard, Control D Ad-Free, dnsforge |
+| **Security** | Cloudflare Security, CleanBrowsing Security, Comodo Secure, Control D Malware, SafeDNS, Yandex Safe |
+| **Family** | Cloudflare Family, AdGuard Family, OpenDNS FamilyShield, CleanBrowsing Family, CleanBrowsing Adult, Yandex Family, Control D Family |
+
+Addresses live in [`Core/DnsCatalog.cs`](Core/DnsCatalog.cs). Adding a server takes one line.
+
+> **Note:** some Iranian DNS servers (e.g. the `10.x.x.x` ones) only work on Iranian networks.
+> Run **Test All Speeds** to see which ones answer on your connection.
+
+---
 
 ## Requirements
 
-- **Windows 64-bit** (Other systems may not be supported).
-- **.NET 9.0** (You need to have the .NET 9.0 runtime installed).
+- **Windows 10 or 11, 64-bit**
+  - The glass effect needs Windows 11 22H2 or newer; older versions get a solid theme.
+- **Administrator rights** to change DNS, flush the cache or renew the IP. The app asks for them when it starts.
 
-### Installing .NET 9.0
+The installer ships its own .NET runtime, so **you don't need to install .NET**.
 
-To install .NET 9.0, you can download it from the official site:
+---
 
-[Download .NET 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-9.0.101-windows-x64-installer)
+## Installation
 
-After installing **.NET 9.0**, you can compile and run the project.
+1. Download **`EtherDNS-Setup-2.0.0.exe`** from the [latest release](https://github.com/DevURANIUM/EtherDNS/releases/latest).
+2. Run the installer and follow the steps. You can add a desktop shortcut.
+3. Start **EtherDNS** from the Start menu and accept the administrator prompt.
 
-## Setup
+To uninstall, use **Settings → Apps → Installed apps → EtherDNS**.
 
-1. **Clone the repository**:
+---
 
-   ```bash
-   git clone https://github.com/your-username/EtherDNS.git
-   cd EtherDNS
-   ```
+## Build from source
 
-2. **Publish the project**:
+### Prerequisites
 
-   Since this is a **self-contained** application, use the following command to publish the application for **Windows x64**:
+- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
+- [Inno Setup 6](https://jrsoftware.org/isinfo.php), only needed to build the installer:
 
-   ```bash
-   dotnet publish -c Release --self-contained --runtime win-x64
-   ```
+  ```bash
+  winget install JRSoftware.InnoSetup
+  ```
 
-   This will create a **Release** build of the project, packaged with all necessary dependencies for a **Windows 64-bit** environment.
+### Clone
 
-3. **Run the application**:
+```bash
+git clone https://github.com/DevURANIUM/EtherDNS.git
+cd EtherDNS
+```
 
-   After publishing, you can navigate to the output folder (`bin\Release\net9.0\win-x64\publish\`) and run the application directly from there.
+### Run in development
 
-## How to Use
+The app needs administrator rights, so run this from an **elevated** terminal (*Run as administrator*):
 
-1. **Run the application**:
-   After publishing, navigate to the folder where the application was published and execute the program:
+```bash
+dotnet run
+```
 
-   ```bash
-   cd bin\Release\net9.0\win-x64\publish\
-   etherdns.exe
-   ```
+To work on the UI from a normal terminal, build it without the admin requirement (DNS changes won't work in this mode):
 
-2. **Choose an option**:
-   - **Option 1**: Reset Network (Renew IP and Flush DNS)
-   - **Option 2**: Set DNS (Choose DNS servers for your network)
-   - **Option 3**: Remove DNS Configuration (Remove manually set DNS servers)
-   - **Option 4**: Wi-Fi History (Show last connected Wi-Fi networks)
-   - **Option 5**: Developer Info (Contact Info and Developer Credits)
-   - **Option 0**: Exit (Close the program)
+```bash
+dotnet run -p:NoAdmin=true
+```
 
-### Example
+### Build the installer
 
-1. **Publish and run the application**:
+```bash
+powershell -ExecutionPolicy Bypass -File build.ps1
+```
 
-   ```bash
-   dotnet publish -c Release --self-contained --runtime win-x64
-   ```
+This publishes a self-contained `win-x64` build to `publish/` and creates the installer at
+`dist/EtherDNS-Setup-<version>.exe`. To publish without building an installer, add `-SkipInstaller`.
 
-   Navigate to the output folder (`bin\Release\net9.0\win-x64\publish\`) and run:
+---
 
-   ```bash
-   etherdns.exe
-   ```
+## How it works
 
-2. The program will display a menu to choose from:
+| Feature | Under the hood |
+|---|---|
+| Set / remove DNS | `netsh interface ipv4/ipv6 set dnsservers …` on the selected adapter |
+| Flush DNS / Renew IP | `ipconfig /flushdns`, `ipconfig /renew "<adapter>"` (only the selected adapter, with a timeout) |
+| Active DNS & mode | `System.Net.NetworkInformation` + the adapter's `NameServer` registry value |
+| Speed test | A raw DNS `A` query over UDP/53, best of several attempts |
+| Public IP | [ipwho.is](https://ipwho.is), falling back to [ipinfo.io](https://ipinfo.io), then [ip-api.com](https://ip-api.com) |
+| Wi-Fi passwords | `netsh wlan show profile name="…" key=clear` |
 
-   ```plaintext
-   ======================================
-   Select an option:
-   1. Reset Network (Renew IP and Flush DNS)
-   2. Set DNS (Choose DNS servers for your network)
-   3. Remove DNS Configuration (Remove manually set DNS servers)
-   4. Wi-Fi History (Show last connected Wi-Fi networks)
-   5. Developer Info (Contact Info and Developer Credits)
-   0. Exit (Close App)
-   ======================================
-   Choose an option:
-   ```
+### Privacy
+- **Wi-Fi passwords** are read from your own PC and never leave it.
+- The **IP Info** page sends a request to the IP lookup services above, so they see your public IP. This only happens when you open that page or press Refresh.
+- EtherDNS has no telemetry, accounts or analytics.
 
-3. If you choose option **2** (Set DNS), you will be presented with a list of available DNS servers to choose from:
+---
 
-   ```plaintext
-   ======================================
-   Select a DNS Service to Set:
-   --------------------------------------
-    + Active Interface: Wi-Fi
-    + Active DNS: Cloudflare
-   --------------------------------------
-    ┌ 1. Google (Web)           : [8.8.8.8, 8.8.4.4]
-    ├ 2. Cloudflare (Web)       : [1.1.1.1, 1.0.0.1]
-    ├ 3. Shecan (Web-Game)      : [178.22.122.100, 185.51.200.2]
-    ├ 4. Begzar (Web)           : [185.55.226.26, 185.55.225.25]
-    ├ 5. Hostiran (Web)         : [172.29.0.100, 172.29.2.100]
-    ├ 6. Electro (Game)         : [78.157.42.100, 78.157.42.101]
-    ├ 7. Radar Game (Game)      : [10.202.10.10, 10.202.10.11]
-    ├ 8. Dynx.pro (Web-Game)    : [193.24.103.1, 193.24.103.2]
-    ├ 9. Private IP (Web-Game)  : [10.30.72.17, 10.30.72.18]
-    ├ 10. 403.online (Web-Game) : [10.202.10.202, 10.202.10.102]
-    ├ 11. Tci (Web-Game)        : [5.200.200.200, 217.218.127.127]
-    ├ 12. AsiaTech (Web-Game)   : [185.98.113.113, 185.98.114.114]
-    ├ 13. Shatel (Web-Game)     : [85.15.1.14, 85.15.1.15]
-    ├ 14. Pishgaman (Web-Game)  : [5.202.100.100, 5.202.100.101]
-    ├ 15. Mobinnet (Web-Game)   : [10.104.88.8, 8.8.8.8]
-    ├ 16. ParsOnline (Web-Game) : [37.10.64.1, 37.10.65.1]
-    ├ 17. Sabanet (Web-Game)    : [89.40.90.100, 188.158.158.158]
-    ├ 18. Taknet (Web-Game)     : [185.47.48.122, 185.142.95.10]
-    ├ 19. Zi-Tel (Web-Game)     : [172.20.11.11, 172.20.11.12]
-    └ 20. Manually Set DNS      : [Enter custom DNS addresses]
-   0. Back to Main Menu
-   ======================================
-   Choose a DNS service or option:
-   ```
+## Tech stack
 
-4. After selecting a DNS service, the tool will apply the settings and confirm the change.
+- **C# / .NET 9**, **WPF**, no third-party packages
+- Native Windows 11 window effects through DWM (dark title, rounded corners, acrylic backdrop)
+- Installer built with **Inno Setup 6**
 
-## Code Overview
+```
+EtherDNS/
+├── App.xaml / MainWindow.xaml   # shell: sidebar, navigation, toasts, dialogs
+├── Core/                        # logic: DNS catalog, network, DNS probe, IP lookup, Wi-Fi, clipboard
+├── Views/                       # pages: Overview, DNS Servers, IP Info, Wi-Fi, About
+├── Themes/Theme.xaml            # colors, styles and control templates
+├── installer/                   # Inno Setup script + installer artwork
+├── legacy/                      # the original console version (v1.2), for reference
+└── build.ps1                    # publish + installer
+```
 
-- **Reset Network**: Uses system commands to renew the IP address and flush the DNS cache.
-- **Set DNS**: Modifies DNS settings via system commands.
-- **Remove DNS Configuration**: Resets DNS settings to default values.
-- **Wi-Fi History**: Retrieves and displays previously connected Wi-Fi networks.
-- **Developer Info**: Displays developer contact information.
+---
+
+## Changelog
+
+### v2.0.0
+- Rewritten from a console app as a full **graphical app** with a Windows installer
+- Grew the list from 19 to **48 verified DNS servers**, organized into groups
+- New: real **DNS speed test**, **live DNS monitor**, **IP Info** page, **Remove DNS from all adapters**
+- Fixed: **Network Reset** no longer hangs on PCs with VPN or virtual adapters (it renews only the selected adapter, with a timeout)
+- Fixed: copying no longer fails when clipboard history is turned on
+
+### v1.2
+- Console version with the original 19 DNS servers. Its source is in [`legacy/`](legacy/).
+
+---
+
+## Contributing
+
+Issues and pull requests are welcome.
+
+- Found a bug or have an idea? [Open an issue](https://github.com/DevURANIUM/EtherDNS/issues).
+- Know a reliable DNS server that's missing? Add it to [`Core/DnsCatalog.cs`](Core/DnsCatalog.cs) and open a PR.
+
+---
+
+## Support & Donations
+
+If EtherDNS is useful to you, a ⭐ on GitHub helps a lot. You can also support development:
+
+| Coin | Address |
+|---|---|
+| **BTC** | `bc1qcclcp574hnznm0nmdzzf0ta7366svjskttqks3` |
+| **LTC** | `ltc1qcrkelw38gjrmg0ptjy2nshqej622kp76het7q0` |
+| **XRP** | `rPoK5SBChFPqEiQv1W97LW6FKoJZLipDVQ` |
+| **XLM** | `GDMUQREEZNBSTQOT5BV7MYEMXJFV3CYRZXUVOYCTIUZTHUWPHLVASFVD` |
+| **TON** | `UQAJH2N0pqpvC9YN841w5NH1dCN9Lakwkpjvoy7vXf-vfqgv` |
+| **TRON** | `TXJqhhwvkrTdnf5HReZf55hEzZuxjto3R4` |
+| **USDT (BEP20)** | `0x1591036c4bD05b046532B65Df939fcd7824E18c7` |
+
+---
+
+## Developer
+
+<img src="docs/screenshots/about.png" alt="About" width="520" align="right"/>
+
+**DevUranium**
+
+- Telegram: [t.me/DevRouter](https://t.me/DevRouter)
+- GitHub: [github.com/DevURANIUM](https://github.com/DevURANIUM)
+- Email: [info@heydari.org](mailto:info@heydari.org)
+
+<br clear="right"/>
 
 ## License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details. The **MIT License** allows you to freely use, modify, and distribute the project, as long as the copyright notice and license text are included with any copies or substantial portions of the software.
-
-## Releases
-
-To download the latest stable release of **EtherDNS**, visit the official [Releases page](https://github.com/DevURANIUM/EtherDNS/releases).
-
-- Check for the latest executable and updates.
-- Download the .exe file for Windows 64-bit and follow the installation instructions.
-- **Version 1.2** - Released. [EtherDNS.exe (12.8 MB)](https://github.com/DevURANIUM/EtherDNS/releases/download/1.2/EtherDNS.exe)  
-
-## Support & Contributions
-
-If you encounter any issues or have suggestions for improvement, please reach out via:
-
-- [GitHub Issues](https://github.com/DevURANIUM/EtherDNS/issues)
-
-## Donation Links
-
-Support the project through donations:
-
-- **BTC**: `bc1qcclcp574hnznm0nmdzzf0ta7366svjskttqks3`
-- **LTC**: `ltc1qcrkelw38gjrmg0ptjy2nshqej622kp76het7q0`
-- **XRP**: `rPoK5SBChFPqEiQv1W97LW6FKoJZLipDVQ`
-- **XLM**: `GDMUQREEZNBSTQOT5BV7MYEMXJFV3CYRZXUVOYCTIUZTHUWPHLVASFVD`
-- **TON**: `UQAJH2N0pqpvC9YN841w5NH1dCN9Lakwkpjvoy7vXf-vfqgv`
-- **TRON**: `TXJqhhwvkrTdnf5HReZf55hEzZuxjto3R4`
-- **USDT(BEP20)**: `0x1591036c4bD05b046532B65Df939fcd7824E18c7`
----
-
-This version reflects the use of **.NET** and includes the correct **dotnet publish** command for building a self-contained application for **Windows 64-bit**. It also provides clear instructions on how to publish, build, and run the application.
+Released under the [MIT License](LICENSE). Copyright © DevUranium.

@@ -1,0 +1,261 @@
+<Window x:Class="EtherDNS.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:core="clr-namespace:EtherDNS.Core"
+        Title="EtherDNS" Width="1180" Height="760" MinWidth="980" MinHeight="640"
+        WindowStyle="None" ResizeMode="CanResize" Background="Transparent"
+        WindowStartupLocation="CenterScreen" Icon="Resources/icon.ico"
+        FontFamily="{StaticResource UiFont}" Foreground="{StaticResource TextBrush}"
+        UseLayoutRounding="True" SnapsToDevicePixels="True">
+
+    <!-- Native frame: Windows draws the rounded corners + soft system shadow (no custom halo),
+         and the sidebar shows the acrylic backdrop through it. -->
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" ResizeBorderThickness="6" GlassFrameThickness="-1"
+                      CornerRadius="0" UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+
+    <Grid x:Name="Root">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="232"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ================= Sidebar (translucent) ================= -->
+        <Border x:Name="Sidebar" Background="{DynamicResource SidebarBrush}" MouseLeftButtonDown="DragArea_MouseLeftButtonDown">
+            <DockPanel Margin="12,14,12,12">
+                <!-- Traffic lights -->
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="6,2,0,24" HorizontalAlignment="Left" Background="Transparent">
+                    <Button Style="{StaticResource TrafficLight}" Background="#FFFF5F57" Click="Close_Click" ToolTip="Close"/>
+                    <Button Style="{StaticResource TrafficLight}" Background="#FFFEBC2E" Click="Minimize_Click" ToolTip="Minimize"/>
+                    <Button Style="{StaticResource TrafficLight}" Background="#FF28C840" Click="Maximize_Click" ToolTip="Zoom"/>
+                </StackPanel>
+
+                <!-- App identity -->
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="8,0,0,20">
+                    <core:IconBadge Glyph="&#xE774;" Tint="brand" Size="32"/>
+                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="EtherDNS" FontFamily="{StaticResource DisplayFont}" FontSize="14" FontWeight="SemiBold"/>
+                        <TextBlock Foreground="{StaticResource MutedBrush}" FontSize="11">
+                            <Run Text="Version"/> <Run Text="{Binding Version, Mode=OneWay}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Admin status -->
+                <Grid DockPanel.Dock="Bottom" Margin="6,8,2,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Ellipse Width="7" Height="7" VerticalAlignment="Center">
+                            <Ellipse.Style>
+                                <Style TargetType="Ellipse">
+                                    <Setter Property="Fill" Value="{StaticResource SuccessBrush}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsAdmin}" Value="False">
+                                            <Setter Property="Fill" Value="{StaticResource WarnBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Ellipse.Style>
+                        </Ellipse>
+                        <TextBlock Margin="8,0,0,0" FontSize="12" Foreground="{StaticResource SubTextBrush}" VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="Administrator"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsAdmin}" Value="False">
+                                            <Setter Property="Text" Value="Limited mode"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                    <Button x:Name="RestartAdminButton" Content="Elevate" Style="{StaticResource GhostButton}"
+                            Padding="10,3" FontSize="11.5" HorizontalAlignment="Right" Click="RestartAdmin_Click"
+                            ToolTip="Restart EtherDNS as administrator"/>
+                </Grid>
+
+                <!-- Live DNS monitor -->
+                <Border DockPanel.Dock="Bottom" CornerRadius="10" Padding="14,12" Background="#14FFFFFF"
+                        BorderBrush="#0FFFFFFF" BorderThickness="1">
+                    <StackPanel>
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <Grid Width="7" Height="7" VerticalAlignment="Center">
+                                    <Ellipse x:Name="LivePulse" Fill="{StaticResource SuccessBrush}" RenderTransformOrigin="0.5,0.5">
+                                        <Ellipse.RenderTransform><ScaleTransform/></Ellipse.RenderTransform>
+                                    </Ellipse>
+                                    <Ellipse Fill="{StaticResource SuccessBrush}"/>
+                                    <Grid.Triggers>
+                                        <EventTrigger RoutedEvent="Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard RepeatBehavior="Forever">
+                                                    <DoubleAnimation Storyboard.TargetName="LivePulse" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" From="1" To="2.4" Duration="0:0:1.8"/>
+                                                    <DoubleAnimation Storyboard.TargetName="LivePulse" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" From="1" To="2.4" Duration="0:0:1.8"/>
+                                                    <DoubleAnimation Storyboard.TargetName="LivePulse" Storyboard.TargetProperty="Opacity" From="0.6" To="0" Duration="0:0:1.8"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </Grid.Triggers>
+                                </Grid>
+                                <TextBlock Text="Live DNS" FontSize="11.5" FontWeight="SemiBold" Foreground="{StaticResource SubTextBrush}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding LiveLatencyText}" HorizontalAlignment="Right" FontSize="12" FontWeight="SemiBold"
+                                       FontFamily="{StaticResource MonoFont}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding LiveLatencyLevel}" Value="good"><Setter Property="Foreground" Value="#FF30D158"/></DataTrigger>
+                                            <DataTrigger Binding="{Binding LiveLatencyLevel}" Value="ok"><Setter Property="Foreground" Value="#FFFF9F0A"/></DataTrigger>
+                                            <DataTrigger Binding="{Binding LiveLatencyLevel}" Value="bad"><Setter Property="Foreground" Value="#FFFF9F0A"/></DataTrigger>
+                                            <DataTrigger Binding="{Binding LiveLatencyLevel}" Value="fail"><Setter Property="Foreground" Value="#FFFF453A"/></DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                        <TextBlock Text="{Binding ActiveProviderName}" FontSize="13" FontWeight="SemiBold" Margin="0,8,0,0" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding SelectedAdapter.Dns[0], FallbackValue=—}" Style="{StaticResource Mono}" FontSize="11"
+                                   Foreground="{StaticResource MutedBrush}" Margin="0,1,0,0"/>
+                        <Grid Height="40" Width="176" Margin="0,10,0,0" HorizontalAlignment="Left" ClipToBounds="True">
+                            <Line X1="0" X2="176" Y1="39.5" Y2="39.5" Stroke="#14FFFFFF" StrokeThickness="1"/>
+                            <Polygon Points="{Binding LatencyArea}">
+                                <Polygon.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#400A84FF" Offset="0"/>
+                                        <GradientStop Color="#000A84FF" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Polygon.Fill>
+                            </Polygon>
+                            <Polyline Points="{Binding LatencyLine}" Stroke="{StaticResource Accent1Brush}" StrokeThickness="1.6"
+                                      StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Navigation with a sliding selection highlight -->
+                <Grid>
+                    <Border x:Name="NavIndicator" Height="36" VerticalAlignment="Top" CornerRadius="9" BorderThickness="1" BorderBrush="#263B82F6" Opacity="0"
+                            Background="{StaticResource NavSelGradient}" IsHitTestVisible="False">
+                        <Border.RenderTransform>
+                            <TranslateTransform/>
+                        </Border.RenderTransform>
+                    </Border>
+                    <StackPanel x:Name="NavPanel">
+                        <TextBlock Text="Network" Style="{StaticResource Caption}" Margin="10,0,0,6"/>
+                        <RadioButton x:Name="NavDashboard" Style="{StaticResource NavButton}" Checked="Nav_Checked">
+                            <StackPanel Orientation="Horizontal">
+                                <core:IconBadge Glyph="&#xE80F;" Tint="blue" Size="24"/>
+                                <TextBlock Text="Overview" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton x:Name="NavDns" Style="{StaticResource NavButton}" Checked="Nav_Checked">
+                            <StackPanel Orientation="Horizontal">
+                                <core:IconBadge Glyph="&#xE774;" Tint="indigo" Size="24"/>
+                                <TextBlock Text="DNS Servers" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton x:Name="NavIp" Style="{StaticResource NavButton}" Checked="Nav_Checked">
+                            <StackPanel Orientation="Horizontal">
+                                <core:IconBadge Glyph="&#xE909;" Tint="teal" Size="24"/>
+                                <TextBlock Text="IP Info" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton x:Name="NavWifi" Style="{StaticResource NavButton}" Checked="Nav_Checked">
+                            <StackPanel Orientation="Horizontal">
+                                <core:IconBadge Glyph="&#xE701;" Tint="green" Size="24"/>
+                                <TextBlock Text="Wi-Fi" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <TextBlock Text="EtherDNS" Style="{StaticResource Caption}" Margin="10,18,0,6"/>
+                        <RadioButton x:Name="NavAbout" Style="{StaticResource NavButton}" Checked="Nav_Checked">
+                            <StackPanel Orientation="Horizontal">
+                                <core:IconBadge Glyph="&#xE946;" Tint="gray" Size="24"/>
+                                <TextBlock Text="About" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
+                    </StackPanel>
+                </Grid>
+            </DockPanel>
+        </Border>
+
+        <!-- ================= Content ================= -->
+        <Border Grid.Column="1" Background="{DynamicResource BgBrush}" BorderBrush="#33000000" BorderThickness="1,0,0,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <!-- Drag strip (macOS-style unified toolbar area) -->
+                <Grid Background="Transparent" MouseLeftButtonDown="DragArea_MouseLeftButtonDown">
+                    <TextBlock x:Name="Breadcrumb" Text="Overview" FontSize="12" FontWeight="SemiBold"
+                               Foreground="{StaticResource MutedBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+
+                <ContentControl x:Name="PageHost" Grid.Row="1" Margin="28,0,22,0" Focusable="False"/>
+
+                <!-- Busy overlay -->
+                <Border Grid.RowSpan="2" Background="#991C1C1E"
+                        Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}">
+                    <Border Style="{StaticResource Card}" Background="#FA2C2C2E" HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Padding="32,26" BorderBrush="#26FFFFFF">
+                        <StackPanel>
+                            <Control Template="{StaticResource SpinnerTemplate}" Width="34" Height="34" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding BusyText}" FontSize="13.5" FontWeight="SemiBold" Margin="0,16,0,0" HorizontalAlignment="Center"/>
+                            <TextBlock Text="This only takes a moment" Foreground="{StaticResource SubTextBrush}" FontSize="12" Margin="0,3,0,0" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Confirm dialog (macOS alert sheet) -->
+        <Border x:Name="ConfirmOverlay" Grid.ColumnSpan="2" Background="#80000000" Visibility="Collapsed">
+            <Border Background="#FA2C2C2E" BorderBrush="#26FFFFFF" BorderThickness="1" CornerRadius="14"
+                    HorizontalAlignment="Center" VerticalAlignment="Center" Padding="24,22" Width="380">
+                <StackPanel>
+                    <core:IconBadge HorizontalAlignment="Center" Glyph="&#xE774;" Tint="brand" Size="48"/>
+                    <TextBlock x:Name="ConfirmTitle" FontSize="14" FontWeight="SemiBold" Margin="0,14,0,0" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"/>
+                    <TextBlock x:Name="ConfirmMessage" Foreground="{StaticResource SubTextBrush}" FontSize="12" TextWrapping="Wrap"
+                               TextAlignment="Center" Margin="0,8,0,0" LineHeight="18"/>
+                    <Grid Margin="0,20,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Style="{StaticResource GhostButton}" Content="Cancel" Click="ConfirmNo_Click" IsCancel="True"/>
+                        <Button x:Name="ConfirmYes" Grid.Column="2" Style="{StaticResource PrimaryButton}" Content="Confirm" Click="ConfirmYes_Click"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Border>
+
+        <!-- Toast (macOS notification banner) -->
+        <Border x:Name="Toast" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,14,16,0"
+                CornerRadius="14" Padding="14,12" MinWidth="280" MaxWidth="420" Background="#F22C2C2E"
+                BorderThickness="1" BorderBrush="#26FFFFFF" Opacity="0" IsHitTestVisible="False">
+            <Border.RenderTransform>
+                <TranslateTransform X="40"/>
+            </Border.RenderTransform>
+            <Grid>
+                <Border x:Name="ToastBar" Height="2" VerticalAlignment="Bottom" Margin="4,0,4,-10" CornerRadius="1"
+                        RenderTransformOrigin="0,0.5" Opacity="0.7">
+                    <Border.RenderTransform>
+                        <ScaleTransform/>
+                    </Border.RenderTransform>
+                </Border>
+                <StackPanel Orientation="Horizontal">
+                    <Border x:Name="ToastIconBg" Width="30" Height="30" CornerRadius="8" Background="#2230D158">
+                        <TextBlock x:Name="ToastIcon" Text="&#xE73E;" Style="{StaticResource Icon}" FontSize="13"
+                                   Foreground="{StaticResource SuccessBrush}" HorizontalAlignment="Center"/>
+                    </Border>
+                    <TextBlock x:Name="ToastText" Margin="11,0,0,0" FontSize="12.5" VerticalAlignment="Center"
+                               TextWrapping="Wrap" MaxWidth="350"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

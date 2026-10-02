@@ -1,0 +1,85 @@
+<UserControl x:Class="EtherDNS.Views.AboutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:core="clr-namespace:EtherDNS.Core">
+    <ScrollViewer Style="{StaticResource FadeScroller}">
+        <StackPanel Margin="0,20,16,30">
+            <TextBlock Text="About" Style="{StaticResource PageTitle}"/>
+            <TextBlock Text="The people and the story behind EtherDNS." Style="{StaticResource PageSubtitle}"/>
+
+            <!-- Hero -->
+            <Border CornerRadius="14" Padding="36" Margin="0,24,0,0" Background="{StaticResource HeroGradient}"
+                    BorderBrush="{StaticResource CardStroke}" BorderThickness="1" core:Reveal.Delay="0:0:0.04">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <core:IconBadge Glyph="&#xE774;" Tint="brand" Size="96"/>
+                    <StackPanel Grid.Column="1" Margin="30,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="EtherDNS" FontFamily="{StaticResource DisplayFont}" FontSize="32" FontWeight="SemiBold"
+                                   Foreground="{StaticResource AccentGradientH}"/>
+                        <TextBlock FontSize="14" Foreground="{StaticResource SubTextBrush}" Margin="0,2,0,0">
+                            <Run Text="Version"/>
+                            <Run Text="{Binding Version, Mode=OneWay}" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold"/>
+                            <Run Text="  ·  DNS changer &amp; network toolkit for Windows"/>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" Foreground="{StaticResource SubTextBrush}" Margin="0,14,0,0" MaxWidth="620" HorizontalAlignment="Left" LineHeight="21">
+                            <Run Text="Switch between"/>
+                            <Run Text="{Binding DnsItems.Count, Mode=OneWay}"/>
+                            <Run Text="curated DNS providers, benchmark them from your own connection, reset your network and recover saved Wi-Fi passwords — all from one place."/>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <TextBlock Text="Developer" Style="{StaticResource SectionTitle}" Margin="0,30,0,14"/>
+            <Grid core:Reveal.Stagger="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Style="{StaticResource TileButton}" Tag="https://t.me/DevRouter" Click="Link_Click">
+                    <StackPanel>
+                        <core:IconBadge HorizontalAlignment="Left" Margin="0,0,0,16" Glyph="&#xE724;" Tint="teal" Size="38"/>
+                        <TextBlock Text="Telegram" FontSize="15" FontWeight="SemiBold"/>
+                        <TextBlock Text="t.me/DevRouter" Foreground="{StaticResource SubTextBrush}" FontWeight="Normal" FontSize="12.5" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="2" Style="{StaticResource TileButton}" Tag="https://github.com/DevURANIUM" Click="Link_Click">
+                    <StackPanel>
+                        <core:IconBadge HorizontalAlignment="Left" Margin="0,0,0,16" Glyph="&#xE943;" Tint="purple" Size="38"/>
+                        <TextBlock Text="GitHub" FontSize="15" FontWeight="SemiBold"/>
+                        <TextBlock Text="github.com/DevURANIUM" Foreground="{StaticResource SubTextBrush}" FontWeight="Normal" FontSize="12.5" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="4" Style="{StaticResource TileButton}" Tag="mailto:info@heydari.org" Click="Link_Click">
+                    <StackPanel>
+                        <core:IconBadge HorizontalAlignment="Left" Margin="0,0,0,16" Glyph="&#xE715;" Tint="pink" Size="38"/>
+                        <TextBlock Text="Email" FontSize="15" FontWeight="SemiBold"/>
+                        <TextBlock Text="info@heydari.org" Foreground="{StaticResource SubTextBrush}" FontWeight="Normal" FontSize="12.5" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+            <Border Style="{StaticResource Card}" Margin="0,16,0,0" Padding="22,18">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="&#xEB51;" Style="{StaticResource Icon}" FontSize="20" Foreground="#FFFF375F"/>
+                    <TextBlock Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource SubTextBrush}"
+                               Text="If you like this project, a star on GitHub or a donation keeps it going. Thank you!"/>
+                </Grid>
+            </Border>
+
+            <TextBlock Text="Copyright © DevUranium. All rights reserved." Foreground="{StaticResource MutedBrush}" FontSize="12"
+                       Margin="0,26,0,0" HorizontalAlignment="Center"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

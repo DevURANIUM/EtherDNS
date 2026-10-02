@@ -1,0 +1,14 @@
+# Build output
+bin/
+obj/
+publish/
+dist/
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Generated installer artwork (recreated by build.ps1)
+installer/*.bmp
