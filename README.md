@@ -222,6 +222,18 @@ If EtherDNS is useful to you, a ⭐ on GitHub helps a lot. You can also support 
 
 ---
 
+## Developer
+
+<img src="docs/screenshots/about.png" alt="About" width="520" align="right"/>
+
+**DevUranium**
+
+- Telegram: [t.me/DevRouter](https://t.me/DevRouter)
+- GitHub: [github.com/DevURANIUM](https://github.com/DevURANIUM)
+- Email: [info@heydari.org](mailto:info@heydari.org)
+
+<br clear="right"/>
+
 ## License
 
 Released under the [MIT License](LICENSE). Copyright © DevUranium.
