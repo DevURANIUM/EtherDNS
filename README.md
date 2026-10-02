@@ -101,6 +101,9 @@ The installer ships its own .NET runtime, so **you don't need to install .NET**.
 
 To uninstall, use **Settings → Apps → Installed apps → EtherDNS**.
 
+> **"Windows protected your PC"?** The installer isn't code-signed, so SmartScreen may warn you on first run.
+> Click **More info → Run anyway** to continue.
+
 ---
 
 ## Build from source
