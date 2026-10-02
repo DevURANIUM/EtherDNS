@@ -95,7 +95,7 @@ The installer ships its own .NET runtime, so **you don't need to install .NET**.
 
 ## Installation
 
-1. Download **`EtherDNS-Setup-2.0.0.exe`** from the [latest release](https://github.com/DevURANIUM/EtherDNS/releases/latest).
+1. Download **`EtherDNS.exe`** from the [latest release](https://github.com/DevURANIUM/EtherDNS/releases/latest).
 2. Run the installer and follow the steps. You can add a desktop shortcut.
 3. Start **EtherDNS** from the Start menu and accept the administrator prompt.
 
