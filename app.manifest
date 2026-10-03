@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
-  <assemblyIdentity version="2.0.0.0" name="EtherDNS.app"/>
+  <assemblyIdentity version="2.1.0.0" name="EtherDNS.app"/>
   <description>EtherDNS</description>
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
     <security>

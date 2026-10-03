@@ -2,7 +2,7 @@
 
 #define AppName "EtherDNS"
 #ifndef AppVersion
-  #define AppVersion "2.0.0"
+  #define AppVersion "2.1.0"
 #endif
 #define AppPublisher "DevUranium"
 #define AppExe "EtherDNS.exe"
@@ -52,3 +52,5 @@ Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExe}"; Tasks: desktopico
 
 [Run]
 Filename: "{app}\{#AppExe}"; Description: "{cm:LaunchProgram,{#AppName}}"; Flags: nowait postinstall skipifsilent shellexec
+; In-app updates run the installer with /SILENT — relaunch EtherDNS when that finishes.
+Filename: "{app}\{#AppExe}"; Flags: nowait shellexec skipifnotsilent

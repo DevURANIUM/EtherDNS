@@ -5,7 +5,7 @@ param([switch]$SkipInstaller)
 
 $ErrorActionPreference = 'Stop'
 $root = $PSScriptRoot
-$version = '2.0.0'
+$version = '2.1.0'
 $publish = Join-Path $root 'publish'
 
 Write-Host "==> Publishing EtherDNS $version (self-contained, win-x64)" -ForegroundColor Cyan

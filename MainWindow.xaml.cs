@@ -51,6 +51,12 @@ public partial class MainWindow : Window
             NavDashboard.IsChecked = true;
             _vm.SetLiveMonitor(true);
         };
+        ContentRendered += async (_, _) =>
+        {
+            // Quiet background update check once the window is up.
+            await Task.Delay(TimeSpan.FromSeconds(4));
+            await _vm.CheckForUpdatesAsync(silent: true);
+        };
     }
 
     // ---------- Navigation ----------

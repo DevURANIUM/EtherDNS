@@ -173,6 +173,11 @@
                             <StackPanel Orientation="Horizontal">
                                 <core:IconBadge Glyph="&#xE946;" Tint="gray" Size="24"/>
                                 <TextBlock Text="About" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                <Border CornerRadius="8" Padding="7,1" Margin="10,0,0,0" VerticalAlignment="Center"
+                                        Background="{StaticResource AccentGradient}" ToolTip="A new version is available"
+                                        Visibility="{Binding HasUpdate, Converter={StaticResource BoolToVis}}">
+                                    <TextBlock Text="Update" FontSize="10.5" FontWeight="SemiBold" Foreground="White"/>
+                                </Border>
                             </StackPanel>
                         </RadioButton>
                     </StackPanel>

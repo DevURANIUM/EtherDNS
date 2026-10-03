@@ -10,7 +10,7 @@ public sealed class MainViewModel : ObservableObject
 {
     public static MainViewModel Instance { get; } = new();
 
-    public const string AppVersion = "2.0.0";
+    public const string AppVersion = "2.1.0";
 
     MainViewModel()
     {
@@ -379,6 +379,133 @@ public sealed class MainViewModel : ObservableObject
             IsLoadingIp = false;
         }
     }
+
+    // ---------- Updates (GitHub Releases) ----------
+
+    UpdateInfo? _update;
+    public UpdateInfo? AvailableUpdate
+    {
+        get => _update;
+        private set { if (Set(ref _update, value)) NotifyUpdateState(); }
+    }
+
+    public bool HasUpdate => AvailableUpdate != null;
+
+    bool _isCheckingUpdate;
+    public bool IsCheckingUpdate
+    {
+        get => _isCheckingUpdate;
+        private set { if (Set(ref _isCheckingUpdate, value)) NotifyUpdateState(); }
+    }
+
+    bool _isDownloadingUpdate;
+    public bool IsDownloadingUpdate
+    {
+        get => _isDownloadingUpdate;
+        private set { if (Set(ref _isDownloadingUpdate, value)) NotifyUpdateState(); }
+    }
+
+    double _updateProgress;
+    public double UpdateProgress { get => _updateProgress; private set => Set(ref _updateProgress, value); }
+
+    string _updateMessage = "Checks GitHub for new versions";
+    public string UpdateMessage { get => _updateMessage; private set => Set(ref _updateMessage, value); }
+
+    public bool CanCheckUpdate => !HasUpdate && !IsCheckingUpdate && !IsDownloadingUpdate;
+    public bool CanInstallUpdate => HasUpdate && !IsDownloadingUpdate;
+    public string UpdateHeadline => AvailableUpdate is { } h ? $"EtherDNS {h.Version.ToString(3)} is available" : "EtherDNS is up to date";
+    public string UpdateButtonText => AvailableUpdate is { } u ? $"Update to {u.Version.ToString(3)}" : "Update";
+
+    CancellationTokenSource? _downloadCts;
+
+    void NotifyUpdateState()
+    {
+        OnPropertyChanged(nameof(HasUpdate));
+        OnPropertyChanged(nameof(CanCheckUpdate));
+        OnPropertyChanged(nameof(CanInstallUpdate));
+        OnPropertyChanged(nameof(UpdateButtonText));
+        OnPropertyChanged(nameof(UpdateHeadline));
+    }
+
+    /// <summary>Asks GitHub for the latest release. <paramref name="silent"/> = background check at startup.</summary>
+    public async Task CheckForUpdatesAsync(bool silent)
+    {
+        if (IsCheckingUpdate || IsDownloadingUpdate) return;
+        IsCheckingUpdate = true;
+        UpdateMessage = "Checking for updates…";
+        try
+        {
+            AvailableUpdate = await UpdateService.CheckAsync();
+            if (AvailableUpdate is { } u)
+            {
+                UpdateMessage = $"Version {u.Version.ToString(3)} is available — you have {AppVersion}.";
+                Toast?.Invoke($"EtherDNS {u.Version.ToString(3)} is available — open About to update", ToastKind.Info);
+            }
+            else
+            {
+                UpdateMessage = $"You're up to date — {AppVersion} is the latest version.";
+                if (!silent) Toast?.Invoke("EtherDNS is up to date", ToastKind.Success);
+            }
+        }
+        catch (Exception ex)
+        {
+            UpdateMessage = "Couldn't check for updates. Check your internet connection.";
+            if (!silent) Toast?.Invoke("Update check failed: " + ex.Message, ToastKind.Error);
+        }
+        finally
+        {
+            IsCheckingUpdate = false;
+        }
+    }
+
+    /// <summary>Downloads + verifies the installer, starts it and closes the app so it can be replaced.</summary>
+    public async Task InstallUpdateAsync()
+    {
+        if (AvailableUpdate is not { } update || IsDownloadingUpdate) return;
+
+        if (update.DownloadUrl == null)
+        {
+            // Release without an installer: send the user to the release page instead.
+            AdminHelper.OpenUrl(update.PageUrl);
+            return;
+        }
+
+        IsDownloadingUpdate = true;
+        UpdateProgress = 0;
+        UpdateMessage = $"Downloading EtherDNS {update.Version.ToString(3)}…";
+        _downloadCts = new CancellationTokenSource();
+        try
+        {
+            var progress = new Progress<double>(p =>
+            {
+                UpdateProgress = p;
+                UpdateMessage = $"Downloading EtherDNS {update.Version.ToString(3)}…  {p:0}%";
+            });
+            var installer = await UpdateService.DownloadAsync(update, progress, _downloadCts.Token);
+
+            UpdateMessage = "Installing — EtherDNS will restart automatically…";
+            await Task.Delay(600);
+            UpdateService.LaunchInstaller(installer);
+            System.Windows.Application.Current.Shutdown();
+        }
+        catch (OperationCanceledException)
+        {
+            UpdateMessage = "Download cancelled.";
+        }
+        catch (Exception ex)
+        {
+            UpdateMessage = "Update failed: " + ex.Message;
+            Toast?.Invoke("Update failed: " + ex.Message, ToastKind.Error);
+        }
+        finally
+        {
+            IsDownloadingUpdate = false;
+            _downloadCts?.Dispose();
+            _downloadCts = null;
+        }
+    }
+
+    public void CancelUpdateDownload() => _downloadCts?.Cancel();
 
     // ---------- Live DNS latency monitor ----------
 

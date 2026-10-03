@@ -53,6 +53,11 @@ see your public IP, reset your network and recover saved Wi-Fi passwords, all in
 - Every Wi-Fi network this PC has saved, with its security type
 - Show, hide or copy a saved password
 
+### Automatic updates
+- Checks [GitHub Releases](https://github.com/DevURANIUM/EtherDNS/releases) at startup and shows an **Update** badge when a new version is out
+- **About → Software Update** shows what's new and installs the update in one click: it downloads the installer, verifies its SHA-256, installs it silently and restarts EtherDNS
+- Downloads resume automatically if the connection drops
+
 ### Design
 - Dark **glass** interface using the native Windows 11 acrylic effect
 - Rounded window with the system shadow, smooth animations and toast notifications
@@ -95,7 +100,7 @@ The installer ships its own .NET runtime, so **you don't need to install .NET**.
 
 ## Installation
 
-1. Download **`EtherDNS-Setup-2.0.0.exe`** from the [latest release](https://github.com/DevURANIUM/EtherDNS/releases/latest).
+1. Download the installer (`.exe`) from the [latest release](https://github.com/DevURANIUM/EtherDNS/releases/latest).
 2. Run the installer and follow the steps. You can add a desktop shortcut.
 3. Start **EtherDNS** from the Start menu and accept the administrator prompt.
 
@@ -159,10 +164,12 @@ This publishes a self-contained `win-x64` build to `publish/` and creates the in
 | Speed test | A raw DNS `A` query over UDP/53, best of several attempts |
 | Public IP | [ipwho.is](https://ipwho.is), falling back to [ipinfo.io](https://ipinfo.io), then [ip-api.com](https://ip-api.com) |
 | Wi-Fi passwords | `netsh wlan show profile name="…" key=clear` |
+| Updates | GitHub's `releases/latest` API; the installer is checked against the SHA-256 GitHub reports, then run with `/SILENT` |
 
 ### Privacy
 - **Wi-Fi passwords** are read from your own PC and never leave it.
 - The **IP Info** page sends a request to the IP lookup services above, so they see your public IP. This only happens when you open that page or press Refresh.
+- At startup EtherDNS asks **GitHub** whether a newer release exists. Nothing about you or your network is sent.
 - EtherDNS has no telemetry, accounts or analytics.
 
 ---
@@ -187,6 +194,9 @@ EtherDNS/
 ---
 
 ## Changelog
+
+### v2.1.0
+- New: **automatic updates**. EtherDNS checks GitHub for new versions and updates itself in one click from **About → Software Update** (verified download, silent install, automatic restart)
 
 ### v2.0.0
 - Rewritten from a console app as a full **graphical app** with a Windows installer
