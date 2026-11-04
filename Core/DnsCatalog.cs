@@ -61,6 +61,12 @@ public static class DnsCatalog
         ("UltraDNS",               "Global",   "Reliable",              "156.154.70.1",    "156.154.71.1"),
         ("Gcore",                  "Global",   "Fast",                  "95.85.95.85",     "2.56.220.2"),
         ("Yandex",                 "Global",   "Reliable",              "77.88.8.8",       "77.88.8.1"),
+        ("DNS4EU",                 "Global",   "Reliable",              "86.54.11.100",    "86.54.11.200"),
+        ("AliDNS",                 "Global",   "Fast",                  "223.5.5.5",       "223.6.6.6"),
+        ("DNSPod",                 "Global",   "Fast",                  "119.29.29.29",    "182.254.116.116"),
+        ("360 DNS",                "Global",   "Reliable",              "101.226.4.6",     "180.163.224.54"),
+        ("IIJ",                    "Global",   "Reliable",              "203.180.164.45",  "203.180.166.45"),
+        ("Switch",                 "Global",   "Reliable",              "130.59.31.248",   "130.59.31.251"),
 
         // Privacy-focused resolvers
         ("Quad9",                  "Privacy",  "No logs · Blocks malware", "9.9.9.9",      "149.112.112.112"),
@@ -69,11 +75,16 @@ public static class DnsCatalog
         ("NextDNS",                "Privacy",  "No logs",               "45.90.28.0",      "45.90.30.0"),
         ("Control D",              "Privacy",  "No logs",               "76.76.2.0",       "76.76.10.0"),
         ("AdGuard Unfiltered",     "Privacy",  "No logs",               "94.140.14.140",   "94.140.14.141"),
+        ("Canadian Shield",        "Privacy",  "No logs",               "149.112.121.10",  "149.112.122.10"),
+        ("Digitale Gesellschaft",  "Privacy",  "No logs",               "185.95.218.42",   "185.95.218.43"),
+        ("LibreDNS",               "Privacy",  "No logs",               "116.202.176.26",  "147.135.76.183"),
+        ("UncensoredDNS",          "Privacy",  "No logs · Uncensored",  "91.239.100.100",  "89.233.43.71"),
 
         // Ad / tracker blocking
         ("AdGuard",                "AdBlock",  "Ads · Trackers",        "94.140.14.14",    "94.140.15.15"),
         ("Control D Ad-Free",      "AdBlock",  "Ads · Trackers",        "76.76.2.2",       "76.76.10.2"),
         ("dnsforge",               "AdBlock",  "Ads · Trackers",        "176.9.93.198",    "176.9.1.117"),
+        ("OpenBLD",                "AdBlock",  "Ads · Trackers",        "146.112.41.2",    "146.112.41.102"),
 
         // Malware / phishing protection
         ("Cloudflare Security",    "Security", "Malware",               "1.1.1.2",         "1.0.0.2"),
@@ -91,6 +102,7 @@ public static class DnsCatalog
         ("CleanBrowsing Adult",    "Family",   "Adult",                 "185.228.168.10",  "185.228.169.11"),
         ("Yandex Family",          "Family",   "Adult",                 "77.88.8.7",       "77.88.8.3"),
         ("Control D Family",       "Family",   "Adult · Malware",       "76.76.2.4",       "76.76.10.4"),
+        ("DNS for Family",         "Family",   "Adult · Ads",           "94.130.180.225",  "78.47.64.161"),
     };
 
     public static List<DnsItem> Create()
