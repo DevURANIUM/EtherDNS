@@ -10,7 +10,7 @@ public sealed class MainViewModel : ObservableObject
 {
     public static MainViewModel Instance { get; } = new();
 
-    public const string AppVersion = "2.1.0";
+    public const string AppVersion = "2.2.0";
 
     MainViewModel()
     {

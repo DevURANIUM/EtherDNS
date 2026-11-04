@@ -2,7 +2,7 @@
 
 #define AppName "EtherDNS"
 #ifndef AppVersion
-  #define AppVersion "2.1.0"
+  #define AppVersion "2.2.0"
 #endif
 #define AppPublisher "DevUranium"
 #define AppExe "EtherDNS.exe"
