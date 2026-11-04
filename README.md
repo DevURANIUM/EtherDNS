@@ -4,7 +4,7 @@
 
 **A modern DNS changer and network toolkit for Windows.**
 
-Switch between 48 verified DNS servers in one click, benchmark them from your own connection,
+Switch between 60 verified DNS servers in one click, benchmark them from your own connection,
 see your public IP, reset your network and recover saved Wi-Fi passwords, all in one app.
 
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0078D6?logo=windows&logoColor=white)](#requirements)
@@ -36,7 +36,7 @@ see your public IP, reset your network and recover saved Wi-Fi passwords, all in
 - Quick actions: **Flush DNS**, **Renew IP**, **Network Reset**, **Remove DNS**, **Speed Test**
 
 ### DNS Servers
-- **48 verified DNS servers** organized into groups: Iranian, Global, Privacy, Ad Block, Security, Family
+- **60 verified DNS servers** organized into groups: Iranian, Global, Privacy, Ad Block, Security, Family
 - **Gaming** filter, search by name or IP, and grouped or speed-ranked views
 - **Speed test** for every server: sends real DNS queries over UDP (more accurate than ping, which many resolvers block)
 - One-click **Apply**, plus **Custom DNS** for any primary/secondary pair you want
@@ -146,11 +146,11 @@ dotnet run -p:NoAdmin=true
 ### Build the installer
 
 ```bash
-powershell -ExecutionPolicy Bypass -File build.ps1
+dotnet publish -c Release -r win-x64 --self-contained true -p:DebugType=none -p:SatelliteResourceLanguages=en -o publish
 ```
 
-This publishes a self-contained `win-x64` build to `publish/` and creates the installer at
-`dist/EtherDNS-Setup-<version>.exe`. To publish without building an installer, add `-SkipInstaller`.
+This publishes a self-contained `win-x64` build to `publish/`. Then compile `installer/EtherDNS.iss` with
+[Inno Setup 6](https://jrsoftware.org/isinfo.php) to create `dist/EtherDNS-Setup-<version>.exe`.
 
 ---
 
@@ -187,13 +187,15 @@ EtherDNS/
 ├── Views/                       # pages: Overview, DNS Servers, IP Info, Wi-Fi, About
 ├── Themes/Theme.xaml            # colors, styles and control templates
 ├── installer/                   # Inno Setup script + installer artwork
-├── legacy/                      # the original console version (v1.2), for reference
-└── build.ps1                    # publish + installer
+└── legacy/                      # the original console version (v1.2), for reference
 ```
 
 ---
 
 ## Changelog
+
+### v2.2.0
+- Added **12 more DNS servers**: DNS4EU, AliDNS, DNSPod, 360 DNS, IIJ, Switch, Canadian Shield, Digitale Gesellschaft, LibreDNS, UncensoredDNS, OpenBLD and DNS for Family (60 in total)
 
 ### v2.1.0
 - New: **automatic updates**. EtherDNS checks GitHub for new versions and updates itself in one click from **About → Software Update** (verified download, silent install, automatic restart)

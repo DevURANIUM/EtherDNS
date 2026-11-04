@@ -10,5 +10,8 @@ dist/
 *.user
 *.suo
 
-# Generated installer artwork (recreated by build.ps1)
+# Generated installer artwork (recreated by installer/make-wizard-images.ps1)
 installer/*.bmp
+
+# Local build script (not published)
+build.ps1
